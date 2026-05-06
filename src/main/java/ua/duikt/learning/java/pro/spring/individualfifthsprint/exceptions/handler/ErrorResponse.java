@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ErrorResponse {
-    // TODO: Add fields: int statusCode, String message, LocalDateTime timestamp
+  private int statusCode;
+  private String message;
+  private LocalDateTime timestamp;
 }
-

@@ -1,20 +1,47 @@
 package ua.duikt.learning.java.pro.spring.individualfifthsprint.exceptions.handler;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ua.duikt.learning.java.pro.spring.individualfifthsprint.exceptions.ProductNotFoundException;
+
+import java.time.LocalDateTime;
+
 /**
  * Created by Mykyta Sirobaba on 20.01.2026.
  * email mykyta.sirobaba@gmail.com
  */
-// TODO: Add the correct annotation for a global exception handler (@RestControllerAdvice)
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // TODO: Implement a method to handle ProductNotFoundException
-    // @ExceptionHandler(ProductNotFoundException.class)
-    // public ResponseEntity<ErrorResponse> handleNotFound(ProductNotFoundException ex) {
-    //     ... return status 404 and JSON with the message
-    // }
+  @ExceptionHandler(ProductNotFoundException.class)
+  public ResponseEntity<ErrorResponse> handleNotFound(ProductNotFoundException ex) {
+    ErrorResponse response = new ErrorResponse(
+            HttpStatus.NOT_FOUND.value(),
+            ex.getMessage(),
+            LocalDateTime.now()
+    );
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+  }
 
-    // TODO: Implement a method to handle IllegalArgumentException (status 400)
+  @ExceptionHandler(IllegalArgumentException.class)
+  public ResponseEntity<ErrorResponse> handleBadRequest(IllegalArgumentException ex) {
+    ErrorResponse response = new ErrorResponse(
+            HttpStatus.BAD_REQUEST.value(),
+            ex.getMessage(),
+            LocalDateTime.now()
+    );
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+  }
 
-    // TODO: Implement a method to handle all other exceptions (Exception.class) (status 500)
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<ErrorResponse> handleGeneral(Exception ex) {
+    ErrorResponse response = new ErrorResponse(
+            HttpStatus.INTERNAL_SERVER_ERROR.value(),
+            "General Error",
+            LocalDateTime.now()
+    );
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+  }
 }
-
